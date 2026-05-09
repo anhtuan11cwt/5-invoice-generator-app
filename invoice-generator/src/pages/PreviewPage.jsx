@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
 import { uploadInvoiceThumbnail } from "../services/cloudService";
-import { saveInvoice } from "../services/invoiceService";
+import { deleteInvoice, saveInvoice } from "../services/invoiceService";
 
 const PreviewPage = () => {
   const {
+    invoiceData,
+    invoiceTitle,
     selectedTemplate,
     setSelectedTemplate,
-    invoiceTitle,
-    invoiceData,
     BASE_URL,
   } = useContext(AppContext);
 
@@ -32,7 +32,6 @@ const PreviewPage = () => {
       const imageData = canvas.toDataURL("image/jpeg", 0.8);
       const thumbnailUrl = await uploadInvoiceThumbnail(imageData);
 
-      // Map structure to match Invoice.java entity in backend
       const payload = {
         billing: {
           address: invoiceData.billTo.address,
@@ -80,6 +79,22 @@ const PreviewPage = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa hóa đơn này?")) {
+      try {
+        setLoading(true);
+        await deleteInvoice(BASE_URL, invoiceData.id);
+        toast.success("Đã xóa hóa đơn!");
+        navigate("/dashboard");
+      } catch (error) {
+        console.error(error);
+        toast.error("Xóa hóa đơn thất bại!");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   const templates = useMemo(
     () => [
       { id: "template1", label: "Template 1" },
@@ -94,10 +109,8 @@ const PreviewPage = () => {
   return (
     <div className="preview-page bg-light min-vh-100 py-4">
       <div className="container">
-        {/* HEADER */}
         <div className="bg-white border rounded-4 shadow-sm p-3 mb-4">
           <div className="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
-            {/* TEMPLATE SWITCHER */}
             <div className="d-flex flex-wrap gap-2">
               {templates.map((template) => (
                 <button
@@ -115,7 +128,6 @@ const PreviewPage = () => {
               ))}
             </div>
 
-            {/* ACTION BUTTONS */}
             <div className="d-flex flex-wrap gap-2">
               <button
                 className="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2"
@@ -133,6 +145,7 @@ const PreviewPage = () => {
               </button>
               <button
                 className="btn btn-outline-danger rounded-pill px-4"
+                onClick={handleDelete}
                 type="button"
               >
                 Xóa hóa đơn
@@ -156,7 +169,6 @@ const PreviewPage = () => {
           </div>
         </div>
 
-        {/* PREVIEW SECTION */}
         <div className="d-flex justify-content-center">
           <div className="invoice-preview">
             <InvoicePreview ref={previewRef} />

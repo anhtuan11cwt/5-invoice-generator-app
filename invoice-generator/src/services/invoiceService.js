@@ -25,3 +25,16 @@ export const getAllInvoices = async (baseURL) => {
     throw error;
   }
 };
+
+export const deleteInvoice = async (baseURL, id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/api/invoices/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Lỗi khi xóa hóa đơn:",
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};

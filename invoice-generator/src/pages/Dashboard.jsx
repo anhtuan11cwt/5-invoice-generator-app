@@ -60,6 +60,7 @@ const Dashboard = () => {
         phone: invoice.company?.phone || "",
       },
       grandTotal: 0,
+      id: invoice.id,
       invoice: {
         date: invoice.invoiceDetails?.invoiceDate || "",
         dueDate: invoice.invoiceDetails?.dueDate || "",
