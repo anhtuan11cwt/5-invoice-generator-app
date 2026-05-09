@@ -7,6 +7,7 @@ import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
 import { uploadInvoiceThumbnail } from "../services/cloudService";
 import { deleteInvoice, saveInvoice } from "../services/invoiceService";
+import { generatePDFFromElement } from "../utils/pdfUtils";
 
 const PreviewPage = () => {
   const {
@@ -18,6 +19,7 @@ const PreviewPage = () => {
   } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const navigate = useNavigate();
   const previewRef = useRef(null);
 
@@ -95,6 +97,28 @@ const PreviewPage = () => {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    try {
+      if (!previewRef.current) {
+        toast.error("Không tìm thấy dữ liệu xem trước");
+        return;
+      }
+
+      setDownloading(true);
+
+      const safeTitle = invoiceTitle?.trim()?.replace(/\s+/g, "-") || "invoice";
+
+      await generatePDFFromElement(previewRef.current, `${safeTitle}.pdf`);
+
+      toast.success("Đã tải PDF thành công");
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi tạo PDF");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   const templates = useMemo(
     () => [
       { id: "template1", label: "Template 1" },
@@ -162,8 +186,19 @@ const PreviewPage = () => {
               >
                 Gửi Email
               </button>
-              <button className="btn btn-dark rounded-pill px-4" type="button">
-                Tải PDF
+              <button
+                className="btn btn-dark rounded-pill px-4 d-flex align-items-center gap-2"
+                disabled={downloading}
+                onClick={handleDownloadPDF}
+                type="button"
+              >
+                {downloading && (
+                  <div
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  />
+                )}
+                {downloading ? "Đang tải..." : "Tải PDF"}
               </button>
             </div>
           </div>
