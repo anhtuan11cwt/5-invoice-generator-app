@@ -32,8 +32,38 @@ const PreviewPage = () => {
       const imageData = canvas.toDataURL("image/jpeg", 0.8);
       const thumbnailUrl = await uploadInvoiceThumbnail(imageData);
 
+      // Map structure to match Invoice.java entity in backend
       const payload = {
-        invoiceData: invoiceData,
+        billing: {
+          address: invoiceData.billTo.address,
+          name: invoiceData.billTo.name,
+          phone: invoiceData.billTo.phone,
+        },
+        company: {
+          address: invoiceData.company.address,
+          name: invoiceData.company.name,
+          phone: invoiceData.company.phone,
+        },
+        invoiceDetails: {
+          dueDate: invoiceData.invoice.dueDate,
+          invoiceDate: invoiceData.invoice.date,
+          invoiceNumber: invoiceData.invoice.number,
+        },
+        items: invoiceData.items.map((item) => ({
+          amount: Number(item.amount),
+          description: item.description,
+          itemName: item.name,
+          quantity: Number(item.quantity),
+          total: Number(item.total),
+        })),
+        logo: invoiceData.logo,
+        notes: invoiceData.notes,
+        shipping: {
+          address: invoiceData.shipTo.address,
+          name: invoiceData.shipTo.name,
+          phone: invoiceData.shipTo.phone,
+        },
+        tax: Number(invoiceData.taxRate),
         template: selectedTemplate,
         thumbnailUrl: thumbnailUrl,
         title: invoiceTitle,
