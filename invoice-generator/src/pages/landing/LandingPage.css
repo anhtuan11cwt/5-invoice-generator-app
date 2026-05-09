@@ -1,0 +1,59 @@
+.hero-section {
+  padding-top: 80px;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%);
+}
+
+.hero-title {
+  margin-bottom: 24px;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111827;
+}
+
+.hero-subtitle {
+  max-width: 600px;
+  margin-bottom: 32px;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.7rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+.step-card {
+  padding: 32px;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-list li {
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+.cta-section {
+  padding: 100px 0;
+  color: white;
+  background: linear-gradient(135deg, #0d6efd, #4f8cff);
+}
+
+.footer-section {
+  padding: 40px 0;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+}

@@ -2,7 +2,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MenuBar from "./components/MenuBar";
 import Dashboard from "./pages/Dashboard";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/landing/LandingPage";
 import MainPage from "./pages/MainPage";
 import PreviewPage from "./pages/PreviewPage";
 
