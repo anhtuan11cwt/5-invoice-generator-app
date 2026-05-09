@@ -192,6 +192,21 @@
 
 ---
 
+## 5. Gửi hóa đơn qua Email
+
+- **Method**: POST
+- **URL**: `http://localhost:8080/api/invoices/send-invoice`
+- **Authorization**: Không
+- **Headers**:
+  - `Content-Type: multipart/form-data`
+- **Body** (form-data):
+  - `file`: (Tệp PDF hóa đơn)
+  - `customerEmail`: (Email người nhận)
+- **Response**:
+  - 200 (thành công): `"Gửi email thành công"`
+
+---
+
 ## Ghi chú chung
 
 - **Cổng mặc định**: Server chạy trên cổng `8080` (xem `application.properties`).
