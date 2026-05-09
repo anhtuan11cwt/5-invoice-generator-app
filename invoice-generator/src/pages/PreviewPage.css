@@ -1,0 +1,21 @@
+.preview-page {
+  overflow-x: auto;
+}
+
+.invoice-preview {
+  width: 794px;
+  min-height: 1123px;
+  overflow: hidden;
+  background: white;
+  border-radius: 18px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+@media (max-width: 900px) {
+  .invoice-preview {
+    transform: scale(0.82);
+    transform-origin: top center;
+  }
+}

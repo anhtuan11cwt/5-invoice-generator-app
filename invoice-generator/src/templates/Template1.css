@@ -1,0 +1,70 @@
+.template1 {
+  min-height: 1123px;
+  padding: 48px;
+  color: #1e293b;
+  background: white;
+}
+
+.template1-header {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.template1-logo {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 18px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.invoice-title {
+  font-size: 52px;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.template1-address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.template1-table {
+  margin-bottom: 50px;
+}
+
+.template1-table thead {
+  background: #eff6ff;
+}
+
+.template1-table th {
+  color: #1d4ed8;
+}
+
+.template1-total-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+}
+
+.template1-total-box {
+  width: 320px;
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 16px;
+}
+
+.template1-footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.template1-footer h5 {
+  margin-bottom: 16px;
+  color: #2563eb;
+}
