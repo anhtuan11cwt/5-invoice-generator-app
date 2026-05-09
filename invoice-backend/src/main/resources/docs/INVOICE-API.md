@@ -118,7 +118,30 @@
 
 ---
 
-## 2. Tạo hóa đơn tối thiểu
+## 2. Lấy danh sách hóa đơn
+
+- **Method**: GET
+- **URL**: `http://localhost:8080/api/invoices`
+- **Authorization**: Không
+- **Response**:
+  - 200 (thành công): Trả về mảng chứa tất cả hóa đơn đã lưu.
+
+```json
+[
+  {
+    "id": "69ff7a720ae2d83737c424b6",
+    "title": "Hóa đơn tháng 5",
+    "template": "template2",
+    "thumbnailUrl": "https://res.cloudinary.com/...",
+    "createdAt": "2026-05-10T01:18:26.883",
+    "updatedAt": "2026-05-10T01:18:26.883"
+  }
+]
+```
+
+---
+
+## 3. Tạo hóa đơn tối thiểu
 
 - **Method**: POST
 - **URL**: `http://localhost:8080/api/invoices`

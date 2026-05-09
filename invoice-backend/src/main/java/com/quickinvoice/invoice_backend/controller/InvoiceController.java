@@ -17,4 +17,9 @@ public class InvoiceController {
     public Invoice createInvoice(@RequestBody Invoice invoice) {
         return invoiceService.saveInvoice(invoice);
     }
+
+    @GetMapping
+    public java.util.List<Invoice> getAllInvoices() {
+        return invoiceService.findAll();
+    }
 }
