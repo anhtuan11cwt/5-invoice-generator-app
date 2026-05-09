@@ -18,4 +18,12 @@ public class InvoiceService {
     public java.util.List<Invoice> findAll() {
         return invoiceRepository.findAll();
     }
+
+    public boolean existsById(String id) {
+        return invoiceRepository.existsById(id);
+    }
+
+    public void deleteById(String id) {
+        invoiceRepository.deleteById(id);
+    }
 }

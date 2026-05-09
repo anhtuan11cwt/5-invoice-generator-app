@@ -22,4 +22,14 @@ public class InvoiceController {
     public java.util.List<Invoice> getAllInvoices() {
         return invoiceService.findAll();
     }
+
+    @DeleteMapping("/{id}")
+    public org.springframework.http.ResponseEntity<?> deleteInvoice(@PathVariable String id) {
+        if (invoiceService.existsById(id)) {
+            invoiceService.deleteById(id);
+            return org.springframework.http.ResponseEntity.ok("Hóa đơn đã được xóa thành công");
+        } else {
+            return org.springframework.http.ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND).body("Không tìm thấy hóa đơn");
+        }
+    }
 }

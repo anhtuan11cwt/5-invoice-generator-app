@@ -181,6 +181,17 @@
 
 ---
 
+## 4. Xóa hóa đơn
+
+- **Method**: DELETE
+- **URL**: `http://localhost:8080/api/invoices/{id}`
+- **Authorization**: Không
+- **Response**:
+  - 200 (thành công): `"Hóa đơn đã được xóa thành công"`
+  - 404 (không tìm thấy): `"Không tìm thấy hóa đơn"`
+
+---
+
 ## Ghi chú chung
 
 - **Cổng mặc định**: Server chạy trên cổng `8080` (xem `application.properties`).
