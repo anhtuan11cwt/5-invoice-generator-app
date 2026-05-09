@@ -1,10 +1,23 @@
-import "./App.css";
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MenuBar from "./components/MenuBar";
+import Dashboard from "./pages/Dashboard";
+import LandingPage from "./pages/LandingPage";
+import MainPage from "./pages/MainPage";
+import PreviewPage from "./pages/PreviewPage";
 
 function App() {
   return (
-    <div>
-      <h1 classNames="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <BrowserRouter>
+      <MenuBar />
+      <Routes>
+        <Route element={<LandingPage />} path="/" />
+        <Route element={<Dashboard />} path="/dashboard" />
+        <Route element={<MainPage />} path="/generate" />
+        <Route element={<PreviewPage />} path="/preview" />
+      </Routes>
+      <Toaster />
+    </BrowserRouter>
   );
 }
 
