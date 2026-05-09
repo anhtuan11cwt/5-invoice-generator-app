@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
 import { uploadInvoiceThumbnail } from "../services/cloudService";
-import { deleteInvoice, saveInvoice } from "../services/invoiceService";
+import {
+  deleteInvoice,
+  saveInvoice,
+  sendInvoice,
+} from "../services/invoiceService";
 import { generatePDFFromElement } from "../utils/pdfUtils";
 
 const PreviewPage = () => {
@@ -20,8 +24,44 @@ const PreviewPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState("");
   const navigate = useNavigate();
   const previewRef = useRef(null);
+
+  const handleSendEmail = async () => {
+    try {
+      if (!customerEmail.trim()) {
+        return toast.error("Vui lòng nhập email");
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+        return toast.error("Email không hợp lệ");
+      }
+
+      setSendingEmail(true);
+
+      const pdfBlob = await generatePDFFromElement(
+        previewRef.current,
+        "invoice.pdf",
+        true,
+      );
+
+      const formData = new FormData();
+      formData.append("file", pdfBlob, "invoice.pdf");
+      formData.append("customerEmail", customerEmail);
+
+      await sendInvoice(BASE_URL, formData);
+      toast.success("Email đã được gửi thành công");
+      setShowModal(false);
+      setCustomerEmail("");
+    } catch (error) {
+      console.error(error);
+      toast.error("Gửi email thất bại");
+    } finally {
+      setSendingEmail(false);
+    }
+  };
 
   const handleSaveAndExit = async () => {
     try {
@@ -182,10 +222,58 @@ const PreviewPage = () => {
               </button>
               <button
                 className="btn btn-warning rounded-pill px-4"
+                onClick={() => setShowModal(true)}
                 type="button"
               >
                 Gửi Email
               </button>
+              {/* Modal Email */}
+              {showModal && (
+                <div
+                  className="modal fade show d-block"
+                  style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                  tabIndex="-1"
+                >
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Gửi Hóa Đơn</h5>
+                        <button
+                          className="btn-close"
+                          onClick={() => setShowModal(false)}
+                          type="button"
+                        />
+                      </div>
+                      <div className="modal-body">
+                        <input
+                          className="form-control"
+                          onChange={(e) => setCustomerEmail(e.target.value)}
+                          placeholder="Nhập email khách hàng"
+                          type="email"
+                          value={customerEmail}
+                        />
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          className="btn btn-light"
+                          onClick={() => setShowModal(false)}
+                          type="button"
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          disabled={sendingEmail}
+                          onClick={handleSendEmail}
+                          type="button"
+                        >
+                          {sendingEmail ? "Đang gửi..." : "Gửi"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               <button
                 className="btn btn-dark rounded-pill px-4 d-flex align-items-center gap-2"
                 disabled={downloading}

@@ -38,3 +38,21 @@ export const deleteInvoice = async (baseURL, id) => {
     throw error;
   }
 };
+
+export const sendInvoice = async (baseURL, formData) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/api/invoices/send-invoice`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Lỗi khi gửi email:", error.response?.data || error.message);
+    throw error;
+  }
+};
