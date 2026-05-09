@@ -1,9 +1,11 @@
 import "./PreviewPage.css";
+import html2canvas from "html2canvas";
 import { useContext, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
+import { uploadInvoiceThumbnail } from "../services/cloudService";
 import { saveInvoice } from "../services/invoiceService";
 
 const PreviewPage = () => {
@@ -22,9 +24,18 @@ const PreviewPage = () => {
   const handleSaveAndExit = async () => {
     try {
       setLoading(true);
+
+      const canvas = await html2canvas(previewRef.current, {
+        scale: 2,
+        useCORS: true,
+      });
+      const imageData = canvas.toDataURL("image/jpeg", 0.8);
+      const thumbnailUrl = await uploadInvoiceThumbnail(imageData);
+
       const payload = {
         invoiceData: invoiceData,
         template: selectedTemplate,
+        thumbnailUrl: thumbnailUrl,
         title: invoiceTitle,
       };
 
