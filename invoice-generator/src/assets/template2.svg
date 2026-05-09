@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500">
+  <rect fill="#f8f9fa" width="400" height="500"/>
+  <rect fill="#198754" width="400" height="100"/>
+  <text fill="#ffffff" font-size="28" font-family="Arial" text-anchor="middle" x="200" y="55">INVOICE</text>
+  <text fill="#333" font-size="14" font-family="Arial" x="20" y="140">Template 2 - Green</text>
+  <rect fill="#198754" opacity="0.3" x="20" y="160" width="360" height="2"/>
+  <text fill="#666" font-size="12" font-family="Arial" x="20" y="190">From: Company Name</text>
+  <text fill="#666" font-size="12" font-family="Arial" x="20" y="210">Bill To: Client Name</text>
+  <rect fill="#e8f5e9" x="20" y="240" width="360" height="30"/>
+  <text fill="#333" font-size="12" font-family="Arial" x="30" y="260">Item 1</text>
+  <text fill="#666" font-size="12" font-family="Arial" x="300" y="260">$100.00</text>
+  <rect fill="#198754" x="20" y="450" width="360" height="40" rx="5"/>
+  <text fill="#ffffff" font-size="18" font-family="Arial" x="280" y="478">Total: $100</text>
+</svg>

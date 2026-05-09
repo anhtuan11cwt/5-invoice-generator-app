@@ -57,3 +57,13 @@
   background: white;
   border-top: 1px solid #e5e7eb;
 }
+
+.template-card {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.template-card:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
