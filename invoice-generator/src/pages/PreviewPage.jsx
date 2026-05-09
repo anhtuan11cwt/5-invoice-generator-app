@@ -1,12 +1,43 @@
 import "./PreviewPage.css";
-import { useContext, useMemo, useRef } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
+import { saveInvoice } from "../services/invoiceService";
 
 const PreviewPage = () => {
-  const { selectedTemplate, setSelectedTemplate } = useContext(AppContext);
+  const {
+    selectedTemplate,
+    setSelectedTemplate,
+    invoiceTitle,
+    invoiceData,
+    BASE_URL,
+  } = useContext(AppContext);
 
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const previewRef = useRef(null);
+
+  const handleSaveAndExit = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        invoiceData: invoiceData,
+        template: selectedTemplate,
+        title: invoiceTitle,
+      };
+
+      await saveInvoice(BASE_URL, payload);
+      toast.success("Hóa đơn đã được lưu thành công!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi lưu hóa đơn. Vui lòng thử lại!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const templates = useMemo(
     () => [
@@ -46,10 +77,18 @@ const PreviewPage = () => {
             {/* ACTION BUTTONS */}
             <div className="d-flex flex-wrap gap-2">
               <button
-                className="btn btn-success rounded-pill px-4"
+                className="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2"
+                disabled={loading}
+                onClick={handleSaveAndExit}
                 type="button"
               >
-                Lưu & Thoát
+                {loading && (
+                  <div
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  />
+                )}
+                {loading ? "Đang lưu..." : "Lưu & Thoát"}
               </button>
               <button
                 className="btn btn-outline-danger rounded-pill px-4"
