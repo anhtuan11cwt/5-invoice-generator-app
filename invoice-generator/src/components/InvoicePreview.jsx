@@ -1,20 +1,20 @@
 import { forwardRef, useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import Template1 from "../templates/Template1";
+import { formatInvoiceData } from "../utils/formatInvoiceData";
+import { templateComponents } from "../utils/invoiceTemplates";
 
 const InvoicePreview = forwardRef((_props, ref) => {
-  const { selectedTemplate } = useContext(AppContext);
+  const { selectedTemplate, invoiceData } = useContext(AppContext);
+  const formattedData = formatInvoiceData(invoiceData);
 
-  const renderTemplate = () => {
-    switch (selectedTemplate) {
-      case "template1":
-        return <Template1 />;
-      default:
-        return <Template1 />;
-    }
-  };
+  const SelectedTemplate =
+    templateComponents[selectedTemplate] || templateComponents.template1;
 
-  return <div ref={ref}>{renderTemplate()}</div>;
+  return (
+    <div ref={ref}>
+      <SelectedTemplate formattedData={formattedData} />
+    </div>
+  );
 });
 
 export default InvoicePreview;

@@ -54,7 +54,7 @@ export const AppContextProvider = ({ children }) => {
   const BASE_URL = "http://localhost:8080";
   const [invoiceTitle, setInvoiceTitle] = useState("Hóa Đơn Mới");
   const [invoiceData, setInvoiceData] = useState(initialInvoiceData);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState("template1");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   const value = {

@@ -1,0 +1,26 @@
+.template3 {
+  min-height: 1123px;
+  padding: 40px;
+  color: white;
+  background: #111827;
+  border-radius: 20px;
+}
+
+.template3-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.template3-badge {
+  padding: 10px 20px;
+  font-weight: 700;
+  color: black;
+  background: #facc15;
+  border-radius: 999px;
+}
+
+.template3-content {
+  padding: 20px;
+}
