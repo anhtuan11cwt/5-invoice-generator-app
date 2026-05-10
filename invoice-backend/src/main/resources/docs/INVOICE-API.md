@@ -22,7 +22,7 @@
   "tax": 10,
   "notes": "Cảm ơn quý khách",
   "thumbnailUrl": "https://example.com/thumb.png",
-  "clerkId": "clerk_123456",
+  "userId": "user_123456",
   "company": {
     "name": "Công ty ABC",
     "phone": "0123456789",
@@ -74,7 +74,7 @@
   "tax": 10,
   "notes": "Cảm ơn quý khách",
   "thumbnailUrl": "https://example.com/thumb.png",
-  "clerkId": "clerk_123456",
+  "userId": "user_123456",
   "company": {
     "name": "Công ty ABC",
     "phone": "0123456789",
@@ -168,7 +168,7 @@
   "tax": null,
   "notes": null,
   "thumbnailUrl": null,
-  "clerkId": null,
+  "userId": null,
   "company": null,
   "billing": null,
   "shipping": null,
