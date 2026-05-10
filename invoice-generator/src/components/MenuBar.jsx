@@ -1,14 +1,23 @@
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import Logo from "./Logo";
 
 const MenuBar = () => {
+  const { isAuthenticated, user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Đăng xuất thành công!");
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-      <div className="container py-2">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+    <nav className="sticky-top bg-white shadow-sm navbar navbar-expand-lg navbar-light">
+      <div className="py-2 container">
+        <Link className="d-flex align-items-center navbar-brand" to="/">
           <Logo />
           <span
-            className="fw-bold fs-4 ms-3"
+            className="ms-3 fw-bold fs-4"
             style={{
               color: "#0D6EFD",
               letterSpacing: "-0.5px",
@@ -31,29 +40,49 @@ const MenuBar = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarMenu">
-          <ul className="navbar-nav ms-auto align-items-center">
+          <ul className="align-items-center ms-auto navbar-nav">
             <li className="nav-item">
               <Link className="nav-link fw-medium" to="/">
                 Trang Chủ
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link fw-medium" to="/dashboard">
-                Dashboard
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link fw-medium" to="/generate">
-                Tạo Hóa Đơn
-              </Link>
-            </li>
-            <li className="nav-item ms-lg-3 mt-3 mt-lg-0">
-              <button
-                className="btn btn-primary rounded-pill px-4"
-                type="button"
-              >
-                Đăng Nhập / Đăng Ký
-              </button>
+
+            {isAuthenticated && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link fw-medium" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link fw-medium" to="/generate">
+                    Tạo Hóa Đơn
+                  </Link>
+                </li>
+              </>
+            )}
+
+            <li className="ms-lg-3 mt-3 mt-lg-0 nav-item">
+              {isAuthenticated ? (
+                <div className="d-flex align-items-center gap-2">
+                  <span className="text-muted small">{user?.fullName}</span>
+                  <button
+                    className="px-3 rounded-pill btn-outline-danger btn"
+                    onClick={handleLogout}
+                    type="button"
+                  >
+                    Đăng Xuất
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  className="px-4 rounded-pill btn btn-primary"
+                  to="/login"
+                  type="button"
+                >
+                  Đăng Nhập / Đăng Ký
+                </Link>
+              )}
             </li>
           </ul>
         </div>

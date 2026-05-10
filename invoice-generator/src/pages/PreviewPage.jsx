@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import InvoicePreview from "../components/InvoicePreview";
 import { AppContext } from "../context/AppContext";
+import { useAuth } from "../hooks/useAuth";
 import { uploadInvoiceThumbnail } from "../services/cloudService";
 import {
   deleteInvoice,
@@ -14,6 +15,7 @@ import {
 import { generatePDFFromElement } from "../utils/pdfUtils";
 
 const PreviewPage = () => {
+  const { getToken } = useAuth();
   const {
     invoiceData,
     invoiceTitle,
@@ -51,12 +53,11 @@ const PreviewPage = () => {
       formData.append("file", pdfBlob, "invoice.pdf");
       formData.append("customerEmail", customerEmail);
 
-      await sendInvoice(BASE_URL, formData);
+      await sendInvoice(BASE_URL, formData, getToken);
       toast.success("Email đã được gửi thành công");
       setShowModal(false);
       setCustomerEmail("");
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Gửi email thất bại");
     } finally {
       setSendingEmail(false);
@@ -110,11 +111,10 @@ const PreviewPage = () => {
         title: invoiceTitle,
       };
 
-      await saveInvoice(BASE_URL, payload);
+      await saveInvoice(BASE_URL, payload, getToken);
       toast.success("Hóa đơn đã được lưu thành công!");
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Lỗi khi lưu hóa đơn. Vui lòng thử lại!");
     } finally {
       setLoading(false);
@@ -125,11 +125,10 @@ const PreviewPage = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa hóa đơn này?")) {
       try {
         setLoading(true);
-        await deleteInvoice(BASE_URL, invoiceData.id);
+        await deleteInvoice(BASE_URL, invoiceData.id, getToken);
         toast.success("Đã xóa hóa đơn!");
         navigate("/dashboard");
-      } catch (error) {
-        console.error(error);
+      } catch {
         toast.error("Xóa hóa đơn thất bại!");
       } finally {
         setLoading(false);
@@ -151,8 +150,7 @@ const PreviewPage = () => {
       await generatePDFFromElement(previewRef.current, `${safeTitle}.pdf`);
 
       toast.success("Đã tải PDF thành công");
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Lỗi khi tạo PDF");
     } finally {
       setDownloading(false);
@@ -161,20 +159,20 @@ const PreviewPage = () => {
 
   const templates = useMemo(
     () => [
-      { id: "template1", label: "Template 1" },
-      { id: "template2", label: "Template 2" },
-      { id: "template3", label: "Template 3" },
-      { id: "template4", label: "Template 4" },
-      { id: "template5", label: "Template 5" },
+      { id: "template1", label: "Mẫu 1" },
+      { id: "template2", label: "Mẫu 2" },
+      { id: "template3", label: "Mẫu 3" },
+      { id: "template4", label: "Mẫu 4" },
+      { id: "template5", label: "Mẫu 5" },
     ],
     [],
   );
 
   return (
-    <div className="preview-page bg-light min-vh-100 py-4">
+    <div className="bg-light py-4 preview-page min-vh-100">
       <div className="container">
-        <div className="bg-white border rounded-4 shadow-sm p-3 mb-4">
-          <div className="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
+        <div className="bg-white shadow-sm mb-4 p-3 border rounded-4">
+          <div className="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
             <div className="d-flex flex-wrap gap-2">
               {templates.map((template) => (
                 <button
@@ -194,7 +192,7 @@ const PreviewPage = () => {
 
             <div className="d-flex flex-wrap gap-2">
               <button
-                className="btn btn-success rounded-pill px-4 d-flex align-items-center gap-2"
+                className="d-flex align-items-center gap-2 px-4 rounded-pill btn btn-success"
                 disabled={loading}
                 onClick={handleSaveAndExit}
                 type="button"
@@ -208,20 +206,20 @@ const PreviewPage = () => {
                 {loading ? "Đang lưu..." : "Lưu & Thoát"}
               </button>
               <button
-                className="btn btn-outline-danger rounded-pill px-4"
+                className="px-4 rounded-pill btn-outline-danger btn"
                 onClick={handleDelete}
                 type="button"
               >
                 Xóa hóa đơn
               </button>
               <button
-                className="btn btn-outline-secondary rounded-pill px-4"
+                className="px-4 rounded-pill btn-outline-secondary btn"
                 type="button"
               >
                 Quay lại
               </button>
               <button
-                className="btn btn-warning rounded-pill px-4"
+                className="px-4 rounded-pill btn btn-warning"
                 onClick={() => setShowModal(true)}
                 type="button"
               >
@@ -230,7 +228,7 @@ const PreviewPage = () => {
               {/* Modal Email */}
               {showModal && (
                 <div
-                  className="modal fade show d-block"
+                  className="d-block modal fade show"
                   style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
                   tabIndex="-1"
                 >
@@ -275,7 +273,7 @@ const PreviewPage = () => {
                 </div>
               )}
               <button
-                className="btn btn-dark rounded-pill px-4 d-flex align-items-center gap-2"
+                className="d-flex align-items-center gap-2 px-4 rounded-pill btn btn-dark"
                 disabled={downloading}
                 onClick={handleDownloadPDF}
                 type="button"
