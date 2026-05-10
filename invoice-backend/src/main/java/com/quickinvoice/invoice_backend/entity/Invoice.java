@@ -24,7 +24,7 @@ public class Invoice {
     private Double tax;
     private String notes;
     private String thumbnailUrl;
-    private String clerkId;
+    private String userId;
 
     private Company company;
     private Billing billing;

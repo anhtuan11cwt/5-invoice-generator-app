@@ -3,33 +3,35 @@ package com.quickinvoice.invoice_backend.controller;
 import com.quickinvoice.invoice_backend.entity.Invoice;
 import com.quickinvoice.invoice_backend.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/invoices")
-@CrossOrigin(origins = "*")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
 
     @PostMapping
-    public Invoice createInvoice(@RequestBody Invoice invoice) {
-        return invoiceService.saveInvoice(invoice);
+    public Invoice createInvoice(@RequestBody Invoice invoice, Authentication authentication) {
+        String userId = authentication.getName();
+        return invoiceService.saveInvoice(invoice, userId);
     }
 
     @GetMapping
-    public java.util.List<Invoice> getAllInvoices() {
-        return invoiceService.findAll();
+    public List<Invoice> getAllInvoices(Authentication authentication) {
+        String userId = authentication.getName();
+        return invoiceService.findByUserId(userId);
     }
 
     @DeleteMapping("/{id}")
-    public org.springframework.http.ResponseEntity<?> deleteInvoice(@PathVariable String id) {
-        if (invoiceService.existsById(id)) {
-            invoiceService.deleteById(id);
-            return org.springframework.http.ResponseEntity.ok("Hóa đơn đã được xóa thành công");
-        } else {
-            return org.springframework.http.ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND).body("Không tìm thấy hóa đơn");
-        }
+    public ResponseEntity<?> deleteInvoice(@PathVariable String id, Authentication authentication) {
+        String userId = authentication.getName();
+        invoiceService.deleteById(id, userId);
+        return ResponseEntity.ok("Hóa đơn đã được xóa thành công");
     }
 }

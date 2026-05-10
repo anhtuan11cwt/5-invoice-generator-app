@@ -37,4 +37,41 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendVerificationEmail(String toEmail, String code) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setFrom(fromEmail);
+        helper.setTo(toEmail);
+        helper.setSubject("Xác thực email - Quick Invoice");
+        helper.setText("Xin chào,\n\n" +
+                "Cảm ơn bạn đã đăng ký tài khoản Quick Invoice.\n\n" +
+                "Vui lòng nhập mã xác thực sau để kích hoạt tài khoản:\n\n" +
+                "Mã xác thực: " + code + "\n\n" +
+                "Mã này sẽ hết hạn sau 24 giờ.\n\n" +
+                "Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.\n\n" +
+                "Trân trọng,\n" +
+                "Đội ngũ Quick Invoice");
+
+        mailSender.send(message);
+    }
+
+    public void sendResetPasswordEmail(String toEmail, String code) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setFrom(fromEmail);
+        helper.setTo(toEmail);
+        helper.setSubject("Đặt lại mật khẩu - Quick Invoice");
+        helper.setText("Xin chào,\n\n" +
+                "Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn.\n\n" +
+                "Mã đặt lại mật khẩu: " + code + "\n\n" +
+                "Mã này sẽ hết hạn sau 1 giờ.\n\n" +
+                "Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.\n\n" +
+                "Trân trọng,\n" +
+                "Đội ngũ Quick Invoice");
+
+        mailSender.send(message);
+    }
 }
